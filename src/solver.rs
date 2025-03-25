@@ -44,7 +44,7 @@ fn is_square_valid (grid: &grid::Grid, row_off: usize, col_off: usize) -> bool {
     check_array_dupes(&square)
 }
 
-pub fn check_grid (grid: &grid::Grid) -> bool {
+fn check_grid (grid: &grid::Grid) -> bool {
     for i in 0..9 {
         if !is_row_valid(grid, i) || !is_col_valid(grid, i) {
             return false;
@@ -60,4 +60,42 @@ pub fn check_grid (grid: &grid::Grid) -> bool {
     }
 
     true
+}
+
+fn get_first_element (grid: &grid::Grid) -> (usize, usize) {
+    for i in 0..9 {
+        for j in 0..9 {
+            if grid.get(i, j) == 0 {
+                return (i, j);
+            }
+        }
+    }
+
+    (0, 0)
+}
+
+pub fn solve_grid (mut grid: grid::Grid) -> (grid::Grid, bool) {
+    let (row, col) = get_first_element(&grid);
+
+    for i in 1..10 {
+        grid.set(row, col, i);
+
+        let grid_correct = check_grid(&grid);
+
+        if grid_correct {
+            let (r_row, r_col) = get_first_element(&grid);
+
+            if r_row == 0 && r_col == 0 {
+                return (grid, true);
+            }
+
+            let (solved_grid, result) = solve_grid(grid.clone());
+
+            if result {
+                return (solved_grid, true);
+            }
+        }
+    }
+
+    (grid, false)
 }

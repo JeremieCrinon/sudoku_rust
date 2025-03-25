@@ -26,7 +26,11 @@ fn main() {
         grid = fill::fill_auto(grid);
     }
 
-    println!("{}", solver::check_grid(&grid));
-    
-    grid.print();
+    let (grid, success) = solver::solve_grid(grid);
+
+    if success {
+        grid.print();
+    } else {
+        println!("The grid you entered is not valid!");
+    }
 }
