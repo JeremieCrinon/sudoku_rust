@@ -1,5 +1,6 @@
 mod grid;
 mod fill;
+mod solver;
 use text_io::read;
 
 fn main() {
@@ -24,6 +25,8 @@ fn main() {
     } else {
         grid = fill::fill_auto(grid);
     }
+
+    println!("{}", solver::check_grid(&grid));
     
     grid.print();
 }
